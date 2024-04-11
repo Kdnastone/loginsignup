@@ -1,0 +1,12 @@
+CREATE DATABASE usuarios;
+USE rusuarios;
+CREATE TABLE ingreso(
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   nombre VARCHAR(50) NOT NULL,
+   apellido VARCHAR(50) NOT NULL,
+   cargo VARCHAR(50) NOT NULL,
+   usuario INT NOT NULL,
+   clave VARCHAR(50) NOT NULL
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1;
+
+
