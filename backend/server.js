@@ -2,7 +2,6 @@
 const express = require('express');
 const app = express();
 const mysql = require("mysql");
-const bcrypt = require('bcrypt');
 const cors = require("cors");
 
 // Middleware para el manejo de datos JSON y CORS
@@ -43,35 +42,28 @@ app.post("/create", (req, res) => {
     });
 });
 
-
-// Ruta para iniciar sesión
-app.post("/access", (req, res) => {
-    const { usuario, clave } = req.body;
-
-    const sql = "SELECT clave FROM ingreso WHERE usuario = ?";
-    db.query(sql, [usuario], (err, data) => {
-        if (err) {
-            console.error('Error al consultar la base de datos:', err);
-            return res.status(500).send('Error al consultar la base de datos');
+app.post('/access', (req, res) => {
+    const usuario= req.body.usuario;
+    const clave = req.body.clave;
+  
+    // Consulta para obtener la contraseña almacenada en la base de datos
+    db.query('SELECT clave FROM ingreso WHERE usuario = ?', [usuario], (error, results, fields) => {
+      if (error) throw error;
+  
+      if (results.length > 0) {
+        const storedPassword = results[0].clave;
+  
+        // Comparar contraseñas
+        if (clave === storedPassword) {
+          res.send('Inicio de sesión exitoso');
+        } else {
+          res.send('Contraseña incorrecta');
         }
-        if (data.length === 0) {
-            return res.status(404).send({ message: 'Usuario no encontrado' });
-        }
-
-        const hashedPassword = data[0].clave;
-        bcrypt.compare(clave, hashedPassword, (compareErr, result) => {
-            if (compareErr) {
-                console.error('Error al comparar las contraseñas:', compareErr);
-                return res.status(500).send('Error al comparar las contraseñas');
-            }
-            if (result) {
-                return res.send({ message: 'Ingreso Exitoso' });
-            } else {
-                return res.status(401).send({ message: 'Usuario o contraseña incorrectos' });
-            }
-        });
+      } else {
+        res.send('Usuario no encontrado');
+      }
     });
-});
+  });
 
 // Puerto en el que el servidor escuchará las solicitudes
 const PORT = 3001;

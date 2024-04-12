@@ -2,7 +2,7 @@ function LoginValidation(values) {
     let errors = {}; // Objeto para almacenar errores de validación
 
     const usuario_pattern = /^[a-zA-Z0-9]{6,}$/; // Patrón para validar el formato del usuario
-    const clave_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/; // Patrón para validar el formato de la contraseña
+    const clave_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/; // Patrón para validar el formato de la contraseña
 
     if (typeof values.usuario === 'number') { // Verifica el campo de usuario
         } else {

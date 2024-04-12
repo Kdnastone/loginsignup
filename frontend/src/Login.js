@@ -29,10 +29,7 @@ function Login() {
     const validationErrors = LoginValidation(values); // Realiza la validación del formulario
     setErrors(validationErrors); // Actualiza los errores de validación
     if (Object.keys(validationErrors).length === 0) { // Verifica si no hay errores de validación
-      axios.post('http://localhost:3001/access', {
-        usuario: parseInt(values.usuario), // Convertir a número
-        clave: values.clave
-    }) // Realiza una solicitud POST para iniciar sesión
+      axios.post('http://localhost:3001/access', values) // Realiza una solicitud POST para iniciar sesión
       .then(res => {
         console.log(res);
         if (res.data.length > 0) { // Verifica si se recibió algún dato en la respuesta
